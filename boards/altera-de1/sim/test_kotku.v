@@ -80,7 +80,10 @@ module test_kotku;
     .sram_data_ (sram_data_),
     .sram_we_n_ (sram_we_n_),
     .sram_oe_n_ (sram_oe_n_),
-    .sram_bw_n_ (sram_bw_n_)
+    .sram_bw_n_ (sram_bw_n_),
+
+    // sd card signals
+    .sd_miso_ (1'b1)
   );
 
   s29al032d_00 flash (

@@ -29,7 +29,7 @@
       for($j=1; $j<count($arr2); $j++)
         {
           $insl = trim($arr2[$j]);
-          $arr3 = split("[ ]+", $insl);
+          $arr3 = preg_split("/[ ]+/", $insl);
           $ins  = $arr3[0];
           if (strlen($ins)<3 || strlen($ins)>6 || $ins!=strtoupper($ins) ||
               preg_match("/__/", $arr3[1])==0) break;
@@ -47,8 +47,9 @@
     {
       for($i=0; $i<count($value['micro']); $i++)
         {
-          $microi = ereg_replace ("_", "", ereg_replace( "[xdms]", "0", 
+          $microi = preg_replace ("/_/", "", preg_replace( "/[xdms]/", "0", 
                                   $value['micro'][$i]['code']));
+//        echo "$microi", " << ", $value['micro'][$i]['code'], "\n";
           if (isset($micro_data_width)) { 
             if ($micro_data_width!=strlen($microi)) 
               die ("Instruction $key does not have the same length\n");
