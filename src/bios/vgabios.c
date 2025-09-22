@@ -22,6 +22,17 @@
 #include "vgatables.h"
 #include "vgafonts.h"
 
+struct pci_data rom_pci_data = {
+    .signature = PCI_ROM_SIGNATURE,
+    .vendor = 0x1234,
+    .device = 0x1111,
+    .dlen = 0x18,
+    .class_hi = 0x300,
+    .irevision = 1,
+    .type = 0,
+    .indicator = 0x80,
+};
+
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 // int10 main dispatcher

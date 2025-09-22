@@ -91,6 +91,7 @@ VGAMEM_MTEXT                    equ     0xB000
 ;;--------------------------------------------------------------------------
                 EXTRN  _int10_func:proc      ; Contained in C source module
                 EXTRN  _printf    :proc      ; Contained in C source module
+                EXTRN  _rom_pci_data:word
 
 ;;--------------------------------------------------------------------------
 ;; Set vector macro
@@ -121,10 +122,13 @@ vgarom:                 org     0x0000         ;; start of ROM, get placed at 00
                         db      0x40           ;; BIOS extension length in units of 512 bytes 
 vgabios_entry_point:    jmp     vgabios_init_func
 ;;--------------------------------------------------------------------------
-vgabios_name:           db      "Zet processor and SoC,"
                         db      0x00
+                        org     0x0018
+                        dw      _rom_pci_data
                         org     0x001e
                         db      "IBM"
+                        db      0x00
+vgabios_name:           db      "Zet processor and SoC,"
                         db      0x00
 vgabios_version_str:    db      " version "
                         db      0x00

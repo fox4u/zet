@@ -643,6 +643,24 @@ Bit16u video_save_pointer_table[] = {
             0
 };
 
+#define PCI_ROM_SIGNATURE 0x52494350 // "PCIR"
+
+_Packed struct pci_data {
+    Bit32u signature;
+    Bit16u vendor;
+    Bit16u device;
+    Bit16u vitaldata;
+    Bit16u dlen;
+    Bit8u drevision;
+    Bit8u class_lo;
+    Bit16u class_hi;
+    Bit16u ilen;
+    Bit16u irevision;
+    Bit8u type;
+    Bit8u indicator;
+    Bit16u reserved;
+};
+
 //---------------------------------------------------------------------------
 #endif
 //---------------------------------------------------------------------------
