@@ -24,7 +24,7 @@
 
 struct pci_data rom_pci_data = {
     .signature = PCI_ROM_SIGNATURE,
-    .vendor = 0x1234,
+    .vendor = 0x10ee, //0x1234,
     .device = 0x1111,
     .dlen = 0x18,
     .class_hi = 0x300,
