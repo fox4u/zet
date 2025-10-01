@@ -115,6 +115,7 @@ module vga_write_iface (
 */
   wire [15:0] val0_write0, val0_write1, val0_write2, val0_write3;
   wire [15:0] val1_write0, val1_write1, val1_write2, val1_write3;
+  wire [15:0] val3_write0, val3_write1, val3_write2, val3_write3;
   wire [15:0] val0_or0, val0_or1, val0_or2, val0_or3;
   wire [15:0] val1_or0, val1_or1, val1_or2, val1_or3;
   wire [15:0] final_wr0, final_wr1, final_wr2, final_wr3;
@@ -251,16 +252,30 @@ module vga_write_iface (
   assign val1_write2 = new_val2 | val1_or2;
   assign val1_write3 = new_val3 | val1_or3;
 
+  // write mode 3
+  assign val3_write0 = (dat_mask & {16{set_reset[0]}}) | (~(dat_mask) & latch0_16);
+  assign val3_write1 = (dat_mask & {16{set_reset[1]}}) | (~(dat_mask) & latch1_16);
+  assign val3_write2 = (dat_mask & {16{set_reset[2]}}) | (~(dat_mask) & latch2_16);
+  assign val3_write3 = (dat_mask & {16{set_reset[3]}}) | (~(dat_mask) & latch3_16);
+
   // Final write
 
-  assign final_wr0 = write_mode[1] ? val1_write0
-                   : (write_mode[0] ? latch0_16 : val0_write0);
-  assign final_wr1 = write_mode[1] ? val1_write1
-                   : (write_mode[0] ? latch1_16 : val0_write1);
-  assign final_wr2 = write_mode[1] ? val1_write2
-                   : (write_mode[0] ? latch2_16 : val0_write2);
-  assign final_wr3 = write_mode[1] ? val1_write3
-                   : (write_mode[0] ? latch3_16 : val0_write3);
+  assign final_wr0 = (write_mode == 2'b10) ? val1_write0
+                   : (write_mode == 2'b01) ? latch0_16
+                   : (write_mode == 2'b00) ? val0_write0
+                   : val3_write0;
+  assign final_wr1 = (write_mode == 2'b10) ? val1_write1
+                   : (write_mode == 2'b01) ? latch1_16
+                   : (write_mode == 2'b00) ? val0_write1
+                   : val3_write1;
+  assign final_wr2 = (write_mode == 2'b10) ? val1_write2
+                   : (write_mode == 2'b01) ? latch2_16
+                   : (write_mode == 2'b00) ? val0_write2
+                   : val3_write2;
+  assign final_wr3 = (write_mode == 2'b10) ? val1_write3
+                   : (write_mode == 2'b01) ? latch3_16
+                   : (write_mode == 2'b00) ? val0_write3
+                   : val3_write2;
 
   assign offset = memory_mapping1 ? { 1'b0, wbs_adr_i[14:1] }
                                   : wbs_adr_i[15:1];
