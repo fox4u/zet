@@ -39,6 +39,7 @@ module vga_write_iface (
     // VGA configuration registers
     input        memory_mapping1,
     input [ 1:0] write_mode,
+    input [ 2:0] rotate_count,
     input [ 1:0] raster_op,
     input [ 7:0] bitmask,
     input [ 3:0] set_reset,
@@ -127,9 +128,20 @@ module vga_write_iface (
   reg  [ 1:0] plane;
   reg  [ 3:0] plane_dec;
 
+  wire [15:0] data_rotate16;
+
   // Continuous assignments
   assign bitmask16 = { bitmask, bitmask };
-  assign dat_mask  = wbs_dat_i & bitmask16;
+  assign data_rotate16 = (rotate_count == 3'b000) ? wbs_dat_i :
+                         (rotate_count == 3'b001) ? { wbs_dat_i[8],    wbs_dat_i[15:9],   wbs_dat_i[0],   wbs_dat_i[7:1] } :
+                         (rotate_count == 3'b010) ? { wbs_dat_i[9:8],  wbs_dat_i[15:10],  wbs_dat_i[1:0], wbs_dat_i[7:2] } :
+                         (rotate_count == 3'b011) ? { wbs_dat_i[10:8], wbs_dat_i[15:11],  wbs_dat_i[2:0], wbs_dat_i[7:3] } :
+                         (rotate_count == 3'b100) ? { wbs_dat_i[11:8], wbs_dat_i[15:12],  wbs_dat_i[3:0], wbs_dat_i[7:4] } :
+                         (rotate_count == 3'b101) ? { wbs_dat_i[12:8], wbs_dat_i[15:13],  wbs_dat_i[4:0], wbs_dat_i[7:5] } :
+                         (rotate_count == 3'b110) ? { wbs_dat_i[13:8], wbs_dat_i[15:14],  wbs_dat_i[5:0], wbs_dat_i[7:6] } :
+                                                    { wbs_dat_i[14:8], wbs_dat_i[15],     wbs_dat_i[6:0], wbs_dat_i[7]   } ;
+
+  assign dat_mask  = data_rotate16 & bitmask16;
 
   assign latch0_16 = { latch0, latch0 };
   assign latch1_16 = { latch1, latch1 };
@@ -151,20 +163,20 @@ module vga_write_iface (
   assign nlb2 = ~latch2_16 & bitmask16;
   assign nlb3 = ~latch3_16 & bitmask16;
 
-  assign alb0 = (wbs_dat_i & latch0_16) & bitmask16;
-  assign alb1 = (wbs_dat_i & latch1_16) & bitmask16;
-  assign alb2 = (wbs_dat_i & latch2_16) & bitmask16;
-  assign alb3 = (wbs_dat_i & latch3_16) & bitmask16;
+  assign alb0 = (data_rotate16 & latch0_16) & bitmask16;
+  assign alb1 = (data_rotate16 & latch1_16) & bitmask16;
+  assign alb2 = (data_rotate16 & latch2_16) & bitmask16;
+  assign alb3 = (data_rotate16 & latch3_16) & bitmask16;
 
-  assign olb0 = (wbs_dat_i | latch0_16) & bitmask16;
-  assign olb1 = (wbs_dat_i | latch1_16) & bitmask16;
-  assign olb2 = (wbs_dat_i | latch2_16) & bitmask16;
-  assign olb3 = (wbs_dat_i | latch3_16) & bitmask16;
+  assign olb0 = (data_rotate16 | latch0_16) & bitmask16;
+  assign olb1 = (data_rotate16 | latch1_16) & bitmask16;
+  assign olb2 = (data_rotate16 | latch2_16) & bitmask16;
+  assign olb3 = (data_rotate16 | latch3_16) & bitmask16;
 
-  assign xlb0 = (wbs_dat_i ^ latch0_16) & bitmask16;
-  assign xlb1 = (wbs_dat_i ^ latch1_16) & bitmask16;
-  assign xlb2 = (wbs_dat_i ^ latch2_16) & bitmask16;
-  assign xlb3 = (wbs_dat_i ^ latch3_16) & bitmask16;
+  assign xlb0 = (data_rotate16 ^ latch0_16) & bitmask16;
+  assign xlb1 = (data_rotate16 ^ latch1_16) & bitmask16;
+  assign xlb2 = (data_rotate16 ^ latch2_16) & bitmask16;
+  assign xlb3 = (data_rotate16 ^ latch3_16) & bitmask16;
 
   // write mode 0
   assign set0 = raster_op[0] ? (raster_op[1] ? nlb0 : lb0 ) : bitmask16;

@@ -58,6 +58,7 @@ module vga_config_iface (
     output       graphics_alpha,   // 3cf (3ce: 6)
     output       memory_mapping1,  // 3cf (3ce: 6)
     output [1:0] write_mode,       // 3cf (3ce: 5)
+    output [2:0] rotate_count,     // 3cf (3ce: 3)
     output [1:0] raster_op,        // 3cf (3ce: 3)
     output       read_mode,        // 3cf (3ce: 5)
     output [7:0] bitmask,          // 3cf (3ce: 8)
@@ -157,6 +158,7 @@ module vga_config_iface (
   assign memory_mapping1  = graphics_ctrl[6][3];
   assign write_mode       = graphics_ctrl[5][1:0];
   assign raster_op        = graphics_ctrl[3][4:3];
+  assign rotate_count     = graphics_ctrl[3][2:0];
   assign read_mode        = graphics_ctrl[5][3];
   assign bitmask          = graphics_ctrl[8];
   assign set_reset        = graphics_ctrl[0][3:0];

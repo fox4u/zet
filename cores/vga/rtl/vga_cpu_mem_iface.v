@@ -44,6 +44,7 @@ module vga_cpu_mem_iface (
     input        chain_four,
     input        memory_mapping1,
     input [ 1:0] write_mode,
+    input [ 2:0] rotate_count,
     input [ 1:0] raster_op,
     input        read_mode,
     input [ 7:0] bitmask,
@@ -129,6 +130,7 @@ module vga_cpu_mem_iface (
 
     .memory_mapping1  (memory_mapping1),
     .write_mode       (write_mode),
+    .rotate_count     (rotate_count),
     .raster_op        (raster_op),
     .bitmask          (bitmask),
     .set_reset        (set_reset),

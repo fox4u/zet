@@ -74,6 +74,7 @@ module vga (
   wire        graphics_alpha;
   wire        memory_mapping1;
   wire [ 1:0] write_mode;
+  wire [ 2:0] rotate_count;
   wire [ 1:0] raster_op;
   wire        read_mode;
   wire [ 7:0] bitmask;
@@ -144,6 +145,7 @@ module vga (
     .graphics_alpha   (graphics_alpha),
     .memory_mapping1  (memory_mapping1),
     .write_mode       (write_mode),
+    .rotate_count     (rotate_count),
     .raster_op        (raster_op),
     .read_mode        (read_mode),
     .bitmask          (bitmask),
@@ -262,6 +264,7 @@ module vga (
     .memory_mapping1  (memory_mapping1),
     .write_mode       (write_mode),
     .raster_op        (raster_op),
+    .rotate_count     (rotate_count),
     .read_mode        (read_mode),
     .bitmask          (bitmask),
     .set_reset        (set_reset),
