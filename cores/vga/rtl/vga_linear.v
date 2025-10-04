@@ -26,6 +26,9 @@ module vga_linear (
     input  [15:0] csr_dat_i,
     output        csr_stb_o,
 
+    input [4:0] max_scan_line,
+    input [1:0] addressing,   
+
     input [9:0] h_count,
     input [9:0] v_count,
     input       horiz_sync_i,
@@ -37,9 +40,9 @@ module vga_linear (
   );
 
   // Registers
-  reg [ 9:0] row_addr;
+  reg [14:0] row_addr;
   reg [ 6:0] col_addr;
-  reg [14:1] word_offset;
+  reg [14:0] word_offset;
   reg [ 1:0] plane_addr;
   reg [ 1:0] plane_addr0;
   reg [ 7:0] color_l;
@@ -49,14 +52,20 @@ module vga_linear (
   reg [5:0] pipe;
   reg [15:0] word_color;
 
+  reg  [ 3:0] p_high_byte;
+  reg  [ 9:0] r_v_count;
+  wire [ 9:0] w_v_count;
+
   // Continous assignments
-  assign csr_adr_o = { plane_addr, word_offset, 1'b0 };
+  assign csr_adr_o = { plane_addr, ((addressing[1]) ? { word_offset[13:0], 1'b0 } : { 1'b0, word_offset[14:1] }) };
   assign csr_stb_o = pipe[1];
 
-  assign color = pipe[4] ? csr_dat_i[7:0] : color_l;
+  assign color = pipe[4] ? (p_high_byte[2] ? csr_dat_i[15:8] : csr_dat_i[7:0]) : color_l;
 
   assign video_on_h_o = video_on_h[4];
   assign horiz_sync_o = horiz_sync[4];
+
+  assign w_v_count = (max_scan_line == 5'b0) ? v_count : {1'b0, v_count[9:1]};
 
   // Behaviour
   // Pipeline count
@@ -71,30 +80,42 @@ module vga_linear (
   always @(posedge clk)
     horiz_sync <= rst ? 5'b0 : { horiz_sync[3:0], horiz_sync_i };
 
+  always @(posedge clk)
+    p_high_byte <= rst ? 4'b0 : { p_high_byte[2:0], ((~addressing[1]) & pipe[1] & word_offset[0]) };
+
   // Address generation
   always @(posedge clk)
     if (rst)
       begin
-        row_addr    <= 10'h0;
+        row_addr    <= 15'h0;
         col_addr    <= 7'h0;
         plane_addr0 <= 2'b00;
-        word_offset <= 14'h0;
+        word_offset <= 15'h0;
         plane_addr  <= 2'b00;
+        r_v_count   <= 9'b0;
       end
     else
       begin
-        // Loading new row_addr and col_addr when h_count[3:0]==4'h0
-        // v_count * 5 * 32
-        row_addr    <= { v_count[8:1], 2'b00 } + v_count[8:1];
+        // Loading new row_addr and col_addr when h_count[2:0]==3'h0
+        // v_count * 80 (bytes)
+        if (w_v_count == 9'b0) begin
+          row_addr <= 15'h0;
+          r_v_count <= w_v_count;
+        end
+        else if (w_v_count != r_v_count) begin
+          row_addr <= row_addr + 80;
+          r_v_count <= w_v_count;
+        end
         col_addr    <= h_count[9:3];
         plane_addr0 <= h_count[2:1];
 
-        word_offset <= { row_addr + col_addr[6:4], col_addr[3:0] };
+        word_offset <= row_addr + col_addr;
+
         plane_addr  <= plane_addr0;
       end
 
   // color_l
   always @(posedge clk)
-    color_l <= rst ? 8'h0 : (pipe[4] ? csr_dat_i[7:0] : color_l);
+    color_l <= rst ? 8'h0 : (pipe[4] ? (p_high_byte[2] ? csr_dat_i[15:8] : csr_dat_i[7:0]) : color_l);
 
 endmodule

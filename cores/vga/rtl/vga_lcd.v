@@ -65,6 +65,9 @@ module vga_lcd (
     input [9:0] end_vert,
     input [9:0] st_ver_retr,
     input [3:0] end_ver_retr,
+    input [7:0] addr_offset,
+    input [4:0] max_scan_line,
+    input [1:0] addressing,    
 
     input x_dotclockdiv2,
 
@@ -155,6 +158,7 @@ module vga_lcd (
 
     .attr_plane_enable (4'hf),
     .x_dotclockdiv2    (x_dotclockdiv2),
+    .addr_offset       (addr_offset),
 
     .h_count      (h_count),
     .v_count      (v_count),
@@ -174,6 +178,9 @@ module vga_lcd (
     .csr_adr_o (csr_gm_adr_o),
     .csr_dat_i (csr_dat_i),
     .csr_stb_o (csr_gm_stb_o),
+
+    .max_scan_line(max_scan_line),
+    .addressing   (addressing),    
 
     .h_count      (h_count),
     .v_count      (v_count),

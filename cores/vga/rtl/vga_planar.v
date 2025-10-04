@@ -29,6 +29,7 @@ module vga_planar (
     // Controller registers
     input [3:0] attr_plane_enable,
     input       x_dotclockdiv2,
+    input [7:0] addr_offset,
 
     input [9:0] h_count,
     input [9:0] v_count,
@@ -41,7 +42,7 @@ module vga_planar (
   );
 
   // Registers and net
-  reg [11:0] row_addr;
+  reg [14:0] row_addr;
   reg [ 5:0] col_addr;
   reg [14:0] word_offset;
   reg [ 1:0] plane_addr0;
@@ -58,12 +59,14 @@ module vga_planar (
 
   wire [15:0] bit_mask;
   wire        v_count0;
+  wire [ 9:0] w_v_count;
 
   wire bit3, bit2, bit1, bit0;
 
   reg [9:0] video_on_h;
   reg [9:0] horiz_sync;
   reg [7:0] pipe;
+  reg [9:0] r_v_count;
 
   // Continous assignments
   assign csr_adr_o = { plane_addr, word_offset };
@@ -78,6 +81,7 @@ module vga_planar (
   assign horiz_sync_o = horiz_sync[9];
   assign csr_stb_o    = |pipe[4:1];
   assign v_count0     = x_dotclockdiv2 ? 1'b0 : v_count[0];
+  assign w_v_count    = x_dotclockdiv2 ? {1'b0, v_count[9:1]} : v_count;
 
   // Behaviour
   // Pipeline count
@@ -97,24 +101,31 @@ module vga_planar (
   always @(posedge clk)
     if (rst)
       begin
-        row_addr    <= 12'h0;
+        row_addr    <= 15'h0;
         col_addr    <= 6'h0;
         plane_addr0 <= 2'b00;
         word_offset <= 15'h0;
         plane_addr  <= 2'b00;
+        r_v_count   <= 9'b0;
       end
     else
       begin
         // Loading new row_addr and col_addr when h_count[3:0]==4'h0
         // v_count * 40 or 22 (depending on x_dotclockdiv2)
-        row_addr <= { v_count[9:1], v_count0, 2'b00 } + { v_count[9:1], v_count0 }
-                  + (x_dotclockdiv2 ? v_count[9:1] : 9'h0);
+        if (w_v_count == 9'b0) begin
+          row_addr <= 15'h0;
+          r_v_count <= w_v_count;
+        end
+        else if (w_v_count != r_v_count) begin
+          row_addr <= row_addr + addr_offset; // (x_dotclockdiv2 ? 20 : 40);
+          r_v_count <= w_v_count;
+        end
+
         col_addr <= x_dotclockdiv2 ? h_count[9:5] : h_count[9:4];
         plane_addr0 <= h_count[1:0];
 
         // Load new word_offset at +1
-        word_offset <= (x_dotclockdiv2 ? { row_addr, 1'b0 }
-                                       : { row_addr, 3'b000 }) + col_addr;
+        word_offset <= row_addr + col_addr;
         plane_addr  <= plane_addr0;
       end
 

@@ -98,6 +98,9 @@ module vga_config_iface (
     output [ 9:0] end_vert,
     output [ 9:0] st_ver_retr,
     output [ 3:0] end_ver_retr,
+    output [ 7:0] addr_offset,
+    output [ 4:0] max_scan_line,
+    output [ 1:0] addressing,
 
     input v_retrace,
     input vh_retrace
@@ -182,6 +185,10 @@ module vga_config_iface (
   assign end_vert     = { CRTC[7][6], CRTC[7][1], CRTC[18] };
   assign st_ver_retr  = { CRTC[7][7], CRTC[7][2], CRTC[16] };
   assign end_ver_retr = CRTC[17][3:0];
+  assign addr_offset  = CRTC[19];
+  
+  assign max_scan_line   = CRTC[9][4:0];
+  assign addressing      = { CRTC[20][6], CRTC[23][6] };
 
   assign write    = wb_stb_i & wb_we_i;
   assign read     = wb_stb_i & !wb_we_i;
@@ -305,7 +312,7 @@ module vga_config_iface (
   initial
     begin
       for (i=0;i<=8 ;i=i+1) graphics_ctrl[i] = 8'h0;
-      for (i=0;i<=18;i=i+1) CRTC[i] = 8'h0;
+      for (i=0;i<=23;i=i+1) CRTC[i] = 8'h0;
     end
 `endif
 
