@@ -1,0 +1,220 @@
+BLOCK RESETPATHS;
+BLOCK ASYNCPATHS;
+
+
+#i5-v6.0
+LOCATE COMP "clk_25_" SITE "P3";
+IOBUF  PORT "clk_25_" PULLMODE=NONE IO_TYPE=LVCMOS33;
+FREQUENCY PORT "clk_25_" 25 MHZ;
+
+# JTAG and SPI FLASH voltage 3.3V and options to boot from SPI flash
+# write to FLASH possible any time from JTAG:
+# SYSCONFIG CONFIG_IOVOLTAGE=3.3 COMPRESS_CONFIG=ON MCCLK_FREQ=62 SLAVE_SPI_PORT=DISABLE MASTER_SPI_PORT=ENABLE SLAVE_PARALLEL_PORT=DISABLE;
+# write to FLASH possible from user bitstream:
+SYSCONFIG CONFIG_IOVOLTAGE=3.3 COMPRESS_CONFIG=ON MCCLK_FREQ=62 SLAVE_SPI_PORT=DISABLE MASTER_SPI_PORT=DISABLE SLAVE_PARALLEL_PORT=DISABLE;
+
+#i5-v6.0 HDMI
+#LOCATE COMP "gpdi_dp[0]" SITE "G19"; # Blue +
+##LOCATE COMP "gpdi_dn[0]" SITE "H20"; # Blue -
+#LOCATE COMP "gpdi_dp[1]" SITE "E20"; # Green +
+##LOCATE COMP "gpdi_dn[1]" SITE "F19"; # Green -
+#LOCATE COMP "gpdi_dp[2]" SITE "C20"; # Red +
+##LOCATE COMP "gpdi_dn[2]" SITE "D19"; # Red -
+#LOCATE COMP "gpdi_dp[3]" SITE "J19"; # Clock +
+##LOCATE COMP "gpdi_dn[3]" SITE "K19"; # Clock -
+#
+#IOBUF PORT "gpdi_dp[0]" IO_TYPE=LVCMOS33D DRIVE=4;
+##IOBUF PORT "gpdi_dn[0]" IO_TYPE=LVCMOS33D DRIVE=4;
+#IOBUF PORT "gpdi_dp[1]" IO_TYPE=LVCMOS33D DRIVE=4;
+##IOBUF PORT "gpdi_dn[1]" IO_TYPE=LVCMOS33D DRIVE=4;
+#IOBUF PORT "gpdi_dp[2]" IO_TYPE=LVCMOS33D DRIVE=4;
+##IOBUF PORT "gpdi_dn[2]" IO_TYPE=LVCMOS33D DRIVE=4;
+#IOBUF PORT "gpdi_dp[3]" IO_TYPE=LVCMOS33D DRIVE=4;
+##IOBUF PORT "gpdi_dn[3]" IO_TYPE=LVCMOS33D DRIVE=4;
+
+# VGA
+LOCATE      COMP "tft_lcd_hsync_"  SITE "C17";
+LOCATE      COMP "tft_lcd_vsync_"  SITE "B18";
+LOCATE      COMP "tft_lcd_r_[0]"   SITE "E2";
+LOCATE      COMP "tft_lcd_r_[1]"   SITE "D2";
+LOCATE      COMP "tft_lcd_r_[2]"   SITE "B1";
+LOCATE      COMP "tft_lcd_r_[3]"   SITE "A3";
+LOCATE      COMP "tft_lcd_g_[0]"   SITE "A18";
+LOCATE      COMP "tft_lcd_g_[1]"   SITE "A19";
+LOCATE      COMP "tft_lcd_g_[2]"   SITE "B19";
+LOCATE      COMP "tft_lcd_g_[3]"   SITE "D20";
+LOCATE      COMP "tft_lcd_b_[0]"   SITE "D1";
+LOCATE      COMP "tft_lcd_b_[1]"   SITE "C1";
+LOCATE      COMP "tft_lcd_b_[2]"   SITE "C2";
+LOCATE      COMP "tft_lcd_b_[3]"   SITE "E3";
+
+IOBUF       PORT "tft_lcd_hsync_"  IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_vsync_"  IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_r_[0]"   IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_r_[1]"   IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_r_[2]"   IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_r_[3]"   IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_g_[0]"   IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_g_[1]"   IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_g_[2]"   IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_g_[3]"   IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_b_[0]"   IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_b_[1]"   IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_b_[2]"   IO_TYPE=LVCMOS33;
+IOBUF       PORT "tft_lcd_b_[3]"   IO_TYPE=LVCMOS33;
+
+
+
+# SDRAM
+LOCATE COMP "sdram_data_[0]"  SITE "B6"; 
+LOCATE COMP "sdram_data_[1]"  SITE "A5"; 
+LOCATE COMP "sdram_data_[2]"  SITE "A6"; 
+LOCATE COMP "sdram_data_[3]"  SITE "A7"; 
+LOCATE COMP "sdram_data_[4]"  SITE "C7"; 
+LOCATE COMP "sdram_data_[5]"  SITE "B8"; 
+LOCATE COMP "sdram_data_[6]"  SITE "B5"; 
+LOCATE COMP "sdram_data_[7]"  SITE "A8"; 
+LOCATE COMP "sdram_data_[8]"  SITE "D8"; 
+LOCATE COMP "sdram_data_[9]"  SITE "D7"; 
+LOCATE COMP "sdram_data_[10]" SITE "E8";
+LOCATE COMP "sdram_data_[11]" SITE "D6";
+LOCATE COMP "sdram_data_[12]" SITE "C6";
+LOCATE COMP "sdram_data_[13]" SITE "D5";
+LOCATE COMP "sdram_data_[14]" SITE "E7";
+LOCATE COMP "sdram_data_[15]" SITE "C5";
+LOCATE COMP "sdram_data_[16]" SITE "C10";
+LOCATE COMP "sdram_data_[17]" SITE "D9";
+LOCATE COMP "sdram_data_[18]" SITE "E11";
+LOCATE COMP "sdram_data_[19]" SITE "D11";
+LOCATE COMP "sdram_data_[20]" SITE "C11";
+LOCATE COMP "sdram_data_[21]" SITE "D12";
+LOCATE COMP "sdram_data_[22]" SITE "E9";
+LOCATE COMP "sdram_data_[23]" SITE "C12";
+LOCATE COMP "sdram_data_[24]" SITE "E14";
+LOCATE COMP "sdram_data_[25]" SITE "C15";
+LOCATE COMP "sdram_data_[26]" SITE "E13";
+LOCATE COMP "sdram_data_[27]" SITE "D15";
+LOCATE COMP "sdram_data_[28]" SITE "E12";
+LOCATE COMP "sdram_data_[29]" SITE "B17";
+LOCATE COMP "sdram_data_[30]" SITE "D14";
+LOCATE COMP "sdram_data_[31]" SITE "D13";
+
+LOCATE COMP "sdram_addr_[0]"  SITE "B13";
+LOCATE COMP "sdram_addr_[1]"  SITE "C14";
+LOCATE COMP "sdram_addr_[2]"  SITE "A16";
+LOCATE COMP "sdram_addr_[3]"  SITE "A17";
+LOCATE COMP "sdram_addr_[4]"  SITE "B16";
+LOCATE COMP "sdram_addr_[5]"  SITE "B15";
+LOCATE COMP "sdram_addr_[6]"  SITE "A14";
+LOCATE COMP "sdram_addr_[7]"  SITE "A13";
+LOCATE COMP "sdram_addr_[8]"  SITE "A12";
+LOCATE COMP "sdram_addr_[9]"  SITE "A11";
+LOCATE COMP "sdram_addr_[10]" SITE "B12";
+
+LOCATE COMP "sdram_ba_[0]"    SITE "B11";
+LOCATE COMP "sdram_ba_[1]"    SITE "C8";
+LOCATE COMP "sdram_we_n_"     SITE "A10";
+LOCATE COMP "sdram_cas_n_"    SITE "A9";
+LOCATE COMP "sdram_ras_n_"    SITE "B10";
+LOCATE COMP "sdram_clk_"      SITE "B9";
+
+IOBUF  PORT "sdram_data_[0]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[1]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[2]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[3]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[4]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[5]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[6]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[7]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[8]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[9]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[10]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[11]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[12]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[13]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[14]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[15]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[16]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[17]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[18]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[19]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[20]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[21]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[22]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[23]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[24]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[25]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[26]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[27]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[28]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[29]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[30]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_data_[31]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+
+IOBUF  PORT "sdram_addr_[0]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_addr_[1]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_addr_[2]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_addr_[3]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_addr_[4]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_addr_[5]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_addr_[6]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_addr_[7]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_addr_[8]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_addr_[9]"  PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_addr_[10]" PULLMODE=NONE IO_TYPE=LVCMOS33;
+
+IOBUF  PORT "sdram_ba_[0]"    PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_ba_[1]"    PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_we_n_"     PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_cas_n_"    PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_ras_n_"    PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sdram_clk_"      PULLMODE=NONE IO_TYPE=LVCMOS33;
+
+# LOCATE COMP "led_" SITE "U16";
+# IOBUF PORT "led_" IO_TYPE=LVCMOS33;
+
+
+# LOCATE COMP "uart_txd_" SITE "G5";
+# IOBUF  PORT "uart_txd_" PULLMODE=NONE IO_TYPE=LVCMOS33;
+
+LOCATE COMP "sd_sclk_" SITE "E18";
+LOCATE COMP "sd_miso_" SITE "F18";
+LOCATE COMP "sd_mosi_" SITE "G18";
+LOCATE COMP "sd_ss_"   SITE "H18";
+IOBUF  PORT "sd_sclk_" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sd_miso_" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sd_mosi_" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "sd_ss_"   PULLMODE=NONE IO_TYPE=LVCMOS33;
+
+LOCATE COMP "ps2_kclk_" SITE "T1";
+LOCATE COMP "ps2_kdat_" SITE "Y2";
+LOCATE COMP "ps2_mclk_" SITE "V1";
+LOCATE COMP "ps2_mdat_" SITE "N2";
+IOBUF  PORT "ps2_kclk_" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "ps2_kdat_" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "ps2_mclk_" PULLMODE=NONE IO_TYPE=LVCMOS33;
+IOBUF  PORT "ps2_mdat_" PULLMODE=NONE IO_TYPE=LVCMOS33;
+
+LOCATE      COMP "spinor_cs_" SITE "R2";
+LOCATE      COMP "spinor_so_" SITE "V2";
+LOCATE      COMP "spinor_si_" SITE "W2";
+IOBUF       PORT "spinor_cs_" IO_TYPE=LVCMOS33;
+IOBUF       PORT "spinor_so_" IO_TYPE=LVCMOS33;
+IOBUF       PORT "spinor_si_" IO_TYPE=LVCMOS33;
+
+LOCATE      COMP "led_ext_[0]" SITE "G20";
+LOCATE      COMP "led_ext_[1]" SITE "K20";
+LOCATE      COMP "led_ext_[2]" SITE "L20";
+LOCATE      COMP "led_ext_[3]" SITE "N18";
+LOCATE      COMP "led_ext_[4]" SITE "J20";
+LOCATE      COMP "led_ext_[5]" SITE "L18";
+LOCATE      COMP "led_ext_[6]" SITE "M18";
+LOCATE      COMP "led_ext_[7]" SITE "N17";
+IOBUF       PORT "led_ext_[0]" IO_TYPE=LVCMOS33;
+IOBUF       PORT "led_ext_[1]" IO_TYPE=LVCMOS33;
+IOBUF       PORT "led_ext_[2]" IO_TYPE=LVCMOS33;
+IOBUF       PORT "led_ext_[3]" IO_TYPE=LVCMOS33;
+IOBUF       PORT "led_ext_[4]" IO_TYPE=LVCMOS33;
+IOBUF       PORT "led_ext_[5]" IO_TYPE=LVCMOS33;
+IOBUF       PORT "led_ext_[6]" IO_TYPE=LVCMOS33;
+IOBUF       PORT "led_ext_[7]" IO_TYPE=LVCMOS33;

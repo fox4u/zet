@@ -1087,6 +1087,8 @@ SDRAM_POST:             xor     ax, ax          ; Clear AX register
                         out     dx, ax          ; Auto refresh
                         mov     ax, 0000dh      ; CSR_HPDMC_BYPASS = 0xD;
                         out     dx, ax          ; Auto refresh
+                        mov     ax, 0400bh      ; CSR_HPDMC_BYPASS = 0x400B;
+                        out     dx, ax          ; Precharge All before Load Mode Register                     
                         mov     ax, 023fh       ; CSR_HPDMC_BYPASS = 0x23F;
                         out     dx, ax          ; Load Mode Register, Enable DLL
                         mov     cx, 50          ; Wait about 200 cycles
@@ -1120,6 +1122,11 @@ shadowcopy:             mov     ax, VGABIOSSEGMENT      ;; Load with the segment
                         out     dx, ax                  ;; Save MSB address word
                         mov     bx, 0x0000              ;; Bios starts at offset address 0
                         call    biosloop                ;; Call bios IO loop
+                        mov     ax, word ptr es:[0]     ;; Check VGA bios signature to confirm SDRAM accessible
+                        mov     dx, 0f102h
+                        out     dx, ax                  ;; Output to debug LEDs
+                        cmp     ax, 0AA55h
+                        jne     SDRAM_POST              ;; Otherwise try to rerun SDRAM init
 
 ;;--------------------------------------------------------------------------
                         mov     ax, ROMBIOSSEGMENT      ;; Load with the segment of the extra bios rom area

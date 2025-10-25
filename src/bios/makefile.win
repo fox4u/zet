@@ -74,6 +74,7 @@ bios.hex: bios.rom hexer.exe zetbios.dat
 zetbios.dat: zetbios.rom mifer.exe
 	mifer zetbios.rom
 	copy zetbios.dat ..\..\cores\flash\bootrom.dat
+	copy zetbios.dat ..\..\boards\i5\syn\bootrom.dat
 
 # Make Utilities -------------------------------------------------------------
 # This section compiles the following utilities:

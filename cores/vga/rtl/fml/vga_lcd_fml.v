@@ -533,10 +533,16 @@ module vga_lcd_fml #(
       end
     else
       begin
+/*  100MHz clk
         if (pixel_clk_counter == 2'd00)  // Toggle next_pal_dac_cyc
           next_pal_dac_cyc <=1'b1;
         else next_pal_dac_cyc <= 1'b0;
-
+*/
+//  50MHz clk
+        if (pixel_clk_counter[0] == 1'b0)
+          next_pal_dac_cyc <=1'b1;
+        else next_pal_dac_cyc <= 1'b0;
+//        
         pixel_clk_counter <= pixel_clk_counter + 2'b01;  // Roll over every four cycles
       end
 

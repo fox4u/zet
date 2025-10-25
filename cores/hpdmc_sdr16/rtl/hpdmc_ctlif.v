@@ -54,7 +54,7 @@ module hpdmc_ctlif #(
 );
 
   localparam low_addr_bits16 = 16 - sdram_addrdepth;
-  localparam low_addr_bits12 = sdram_addrdepth - 12;
+  localparam low_addr_bits12 = (sdram_addrdepth > 12 ) ? sdram_addrdepth - 12 : 0;
 
 wire csr_selected = csr_a[2] == csr_addr;
 
