@@ -65,7 +65,9 @@ HPDMC_MODS  = hpdmc_banktimer \
               hpdmc_mgmt \
               hpdmc_sdrio \
               hpdmc
+FMLARB_MODS = fmlarb
 FMLBRG_MODS = fmlbrg_datamem \
+              fmlbrg_tagmem \
               fmlbrg
 CSRBRG_MODS = csrbrg
 GPIO_MODS   = hex_display \
@@ -74,20 +76,25 @@ GPIO_MODS   = hex_display \
 WBABRG_MODS = wb_abrgr \
               wb_abrg
 WBSW_MODS   = wb_switch
-VGA_MODS    = vga \
+VGA_MODS    = vga_fml \
               vga_config_iface \
-              vga_lcd \
+              vga_lcd_fml \
+              vga_crtc_fml \
+              vga_sequencer_fml \
+              vga_text_mode_fml \
               vga_text_mode \
               vga_char_rom \
               vga_c4_iface \
-              vga_planar \
-              vga_linear \
+              vga_planar_fml \
+              vga_linear_fml \
               vga_read_iface \
               vga_write_iface \
               vga_cpu_mem_iface \
               vga_mem_arbitrer \
-              vga_dac_regs \
-              vga_palette_regs
+              vga_dac_regs_fml \
+              vga_pal_dac_fml \
+              vga_palette_regs_fml \
+              vga_fifo
 PIC_MODS    = simple_pic
 TIMER_MODS  = timer \
               timer_counter \
@@ -117,6 +124,7 @@ SYS_MODS    = $(BOARD_MODS) \
               $(ZET_MODS) \
               $(CSR_SRAM) \
               $(HPDMC_MODS) \
+              $(FMLARB_MODS) \
               $(FMLBRG_MODS) \
               $(CSRBRG_MODS) \
               $(GPIO_MODS) \
@@ -142,6 +150,7 @@ vpath %.v ../../../cores/sram
 vpath %.v ../../../cores/flash
 vpath %.v ../../../cores/hpdmc_sdr16/rtl
 vpath %.v ../../../cores/hpdmc_sdr16/test
+vpath %.v ../../../cores/fmlarb/rtl
 vpath %.v ../../../cores/fmlbrg/rtl
 vpath %.v ../../../cores/csrbrg/rtl
 vpath %.v ../../../cores/gpio/rtl
@@ -149,6 +158,7 @@ vpath %.v ../../../cores/wb_abrg
 vpath %.v ../../../cores/wb_switch
 vpath %.v ../../../cores/sram/rtl
 vpath %.v ../../../cores/vga/rtl
+vpath %.v ../../../cores/vga/rtl/fml
 vpath %.v ../../../cores/pic/rtl
 vpath %.v ../../../cores/timer/rtl
 vpath %.v ../../../cores/ps2/rtl

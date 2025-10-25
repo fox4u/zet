@@ -45,13 +45,6 @@ module test_kotku;
   wire        sdram_we_n;
   wire        sdram_cs_n;
 
-  wire [16:0] sram_addr_;
-  wire [15:0] sram_data_;
-  wire        sram_we_n_;
-  wire        sram_oe_n_;
-  wire        sram_ce_n_;
-  wire [ 1:0] sram_bw_n_;
-
   // Module instantiations
   kotku kotku (
     .clk_50_ (clk_50),
@@ -75,12 +68,8 @@ module test_kotku;
     .sdram_we_n_  (sdram_we_n),
     .sdram_cs_n_  (sdram_cs_n),
 
-    // sram signals
-    .sram_addr_ (sram_addr_),
-    .sram_data_ (sram_data_),
-    .sram_we_n_ (sram_we_n_),
-    .sram_oe_n_ (sram_oe_n_),
-    .sram_bw_n_ (sram_bw_n_)
+    // sd card signals
+    .sd_miso_ (1'b1)
   );
 
   s29al032d_00 flash (
@@ -137,16 +126,6 @@ module test_kotku;
     .Dqm   (2'b00)
   );
 
-  is61lv25616 sram (
-    .A   ({1'b0,sram_addr_}),
-    .IO  (sram_data_),
-    .CE_ (1'b0),
-    .OE_ (sram_oe_n_),
-    .WE_ (sram_we_n_),
-    .LB_ (sram_bw_n_[0]),
-    .UB_ (sram_bw_n_[1])
-  );
-
   // Behaviour
   // Clock generation
   always #10 clk_50 <= !clk_50;
@@ -157,7 +136,7 @@ module test_kotku;
       $readmemb("../../../cores/zet/rtl/micro_rom.dat",
         kotku.zet.core.micro_data.micro_rom.rom);
       $readmemh("../../../cores/vga/rtl/char_rom.dat",
-        kotku.vga.lcd.text_mode.char_rom.rom);
+        kotku.vga.lcd.sequencer.text_mode.char_rom.rom);
 //      $readmemh("../../../cores/ps2/rtl/xt_codes.dat",
 //        kotku.ps2.keyb.keyb_xtcodes.rom);
       $readmemh("../../../cores/flash/bootrom.dat",
