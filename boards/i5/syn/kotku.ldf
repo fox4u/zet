@@ -6,9 +6,6 @@
         <Source name="../rtl/kotku.v" type="Verilog" type_short="Verilog">
             <Options top_module="kotku"/>
         </Source>
-        <Source name="../rtl/pll1.v" type="Verilog" type_short="Verilog">
-            <Options/>
-        </Source>
         <Source name="../../../cores/timer/rtl/clk_gen.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
@@ -256,6 +253,9 @@
             <Options/>
         </Source>
         <Source name="../rtl/pll2.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="../../../cores/gpio/rtl/leds2.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
         <Source name="../sim/sim1/sim1.spf" type="Simulation Project File" type_short="SPF">

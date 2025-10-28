@@ -92,5 +92,5 @@ module sdspi (
         : ((op & wb_we_i & wb_sel_i[1]) ? wb_dat_i[8] : ss);
 
   // clk_div
-  always @(posedge wb_clk_i) clk_div <= clk_div - 2'd1;
+  always @(posedge wb_clk_i) clk_div <= wb_rst_i ? 2'b00 : (clk_div - 2'b01);
 endmodule

@@ -184,7 +184,7 @@ module test_sdspi;
       clk   <= 1'b0;
       rst   <= 1'b1;
       miso  <= 1'b1;
-      sdspi.clk_div <= 2'b00;
+      // sdspi.clk_div <= 2'b00;
 
       #400 rst  <= 1'b0;
     end
