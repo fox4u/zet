@@ -22,6 +22,7 @@ module kotku (
     input         clk_25_,
 
     // General purpose IO
+    output reg    led_,
     output [ 7:0] led_ext_,
 
     // flash signals
@@ -352,25 +353,29 @@ module kotku (
 
   wire        spinor_clk;
   wire        spiclk_en;
+
+  wire        sdram_rst;
+  wire        sdram_init_done;
+
     
 `ifndef SIMULATION
   /*
    * Debounce it (counter holds reset for 10.49ms),
    * and generate power-on reset.
    */
-  initial rst_debounce <= 17'h1FFFF;
-  reg rst;
+  wire rst;
   reg rst_r;
   reg vga_rst;
   reg vga_rst_r;
-  initial rst <= 1'b1;
-  always @(posedge clk) begin
-    if(~rst_lck) /* reset is active low */
-      rst_debounce <= 17'h1FFFF;
-    else if(rst_debounce != 17'd0)
-      rst_debounce <= rst_debounce - 17'd1;
-    rst <= rst_debounce != 17'd0;
-  end
+
+  rst_gen #(
+    .CNTW(17),
+    .CNTMAX(17'h1FFFF)
+  ) u_rst_gen_0 (
+    .clk_i(clk),
+    .rstn_i(rst_lck),
+    .rst_o(rst)    
+  );
 
   always @(posedge clk) rst_r <= rst;
   always @(posedge vga_clk)
@@ -551,52 +556,29 @@ module kotku (
 
   );
 
-  wb_abrgr wb_csrbrg (
-    .sys_rst (rst),
+  assign csrbrg_dat_r_s = 16'h0;
+  assign csrbrg_ack_s = csrbrg_stb_s & csrbrg_cyc_s;
 
-    // Wishbone slave interface
-    .wbs_clk_i (clk),
-    .wbs_adr_i (csrbrg_adr_s),
-    .wbs_dat_i (csrbrg_dat_w_s),
-    .wbs_dat_o (csrbrg_dat_r_s),
-    .wbs_sel_i (csrbrg_sel_s),
-    .wbs_tga_i (csrbrg_tga_s),
-    .wbs_stb_i (csrbrg_stb_s),
-    .wbs_cyc_i (csrbrg_cyc_s),
-    .wbs_we_i  (csrbrg_we_s),
-    .wbs_ack_o (csrbrg_ack_s),
+  localparam num_sdram_init_data = 6;
+  localparam sdram_init_data = {
+    {3'b000, 16'h0004, 3'd1},
+    {3'b001, 16'h000d, 3'd5},
+    {3'b001, 16'h000d, 3'd5},
+    {3'b001, 16'h023f, 3'd1},
+    {3'b001, 16'h400b, 3'd1},
+    {3'b000, 16'h0007, 3'd1}
+  };
 
-    // Wishbone master interface
-    .wbm_clk_i (sdram_clk),
-    .wbm_adr_o (csrbrg_adr),
-    .wbm_dat_o (csrbrg_dat_w),
-    .wbm_dat_i (csrbrg_dat_r),
-    .wbm_sel_o (csrbrg_sel),
-    .wbm_tga_o (csrbrg_tga),
-    .wbm_stb_o (csrbrg_stb),
-    .wbm_cyc_o (csrbrg_cyc),
-    .wbm_we_o  (csrbrg_we),
-    .wbm_ack_i (csrbrg_ack)
-  );
-
-  csrbrg csrbrg (
-    .sys_clk (sdram_clk),
-    .sys_rst (rst),
-
-    // Wishbone slave interface
-    .wb_adr_i (csrbrg_adr[3:1]),
-    .wb_dat_i (csrbrg_dat_w),
-    .wb_dat_o (csrbrg_dat_r),
-    .wb_cyc_i (csrbrg_cyc),
-    .wb_stb_i (csrbrg_stb),
-    .wb_we_i  (csrbrg_we),
-    .wb_ack_o (csrbrg_ack),
-
-    // CSR master interface
+  hpdmc_cfg #(
+    .NUM_INIT_DATA(num_sdram_init_data),
+    .INIT_DATA(sdram_init_data)
+  ) u_hpdmc_cfg_0 (
+    .clk(sdram_clk),
+    .rst(rst),
     .csr_a  (csr_a),
     .csr_we (csr_we),
-    .csr_do (csr_dw),
-    .csr_di (csr_dr_hpdmc)
+    .csr_dw (csr_dw),
+    .init_done (sdram_init_done)
   );
 
   fmlarb #(
@@ -1142,5 +1124,7 @@ module kotku (
   assign dat_i = nmia ? 16'h0002 :
                 (inta ? { 13'b0000_0000_0000_1, iid } :
                         sw_dat_o);
+
+  always @(posedge sdram_clk) led_ <= ~sdram_init_done;
   
 endmodule

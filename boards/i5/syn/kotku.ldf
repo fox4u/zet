@@ -258,6 +258,12 @@
         <Source name="../../../cores/gpio/rtl/leds2.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
+        <Source name="../../../cores/reset/rst_gen.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
+        <Source name="../../../cores/hpdmc_sdr16/rtl/hpdmc_cfg.v" type="Verilog" type_short="Verilog">
+            <Options/>
+        </Source>
         <Source name="../sim/sim1/sim1.spf" type="Simulation Project File" type_short="SPF">
             <Options/>
         </Source>
