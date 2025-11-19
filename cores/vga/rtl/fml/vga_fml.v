@@ -93,6 +93,7 @@ module vga_fml #(
   wire        memory_mapping1;
   wire [ 1:0] write_mode;
   wire [ 1:0] raster_op;
+  wire [ 2:0] rotate_count;  
   wire        read_mode;
   wire [ 7:0] bitmask;
   wire [ 3:0] set_reset;
@@ -129,6 +130,9 @@ module vga_fml #(
   wire [ 9:0] end_vert;
   wire [ 9:0] st_ver_retr;
   wire [ 3:0] end_ver_retr;
+  wire [ 7:0] addr_offset;
+  wire [ 4:0] max_scan_line;
+  wire [ 1:0] addressing;  
 
   // attribute_ctrl wires
   wire [3:0] pal_addr;
@@ -163,6 +167,7 @@ module vga_fml #(
     .memory_mapping1  (memory_mapping1),
     .write_mode       (write_mode),
     .raster_op        (raster_op),
+    .rotate_count     (rotate_count),
     .read_mode        (read_mode),
     .bitmask          (bitmask),
     .set_reset        (set_reset),
@@ -201,6 +206,9 @@ module vga_fml #(
     .end_vert     (end_vert),
     .st_ver_retr  (st_ver_retr),
     .end_ver_retr (end_ver_retr),
+    .addr_offset  (addr_offset),
+    .max_scan_line(max_scan_line),
+    .addressing   (addressing),    
 
     .v_retrace  (v_retrace),
     .vh_retrace (vh_retrace)
@@ -264,6 +272,9 @@ module vga_fml #(
     .end_vert     (end_vert),
     .st_ver_retr  (st_ver_retr),
     .end_ver_retr (end_ver_retr),
+    .addr_offset  (addr_offset),
+    .max_scan_line(max_scan_line),
+    .addressing   (addressing),    
 
     .x_dotclockdiv2 (x_dotclockdiv2),
 
@@ -297,6 +308,7 @@ module vga_fml #(
     .memory_mapping1  (memory_mapping1),
     .write_mode       (write_mode),
     .raster_op        (raster_op),
+    .rotate_count     (rotate_count),
     .read_mode        (read_mode),
     .bitmask          (bitmask),
     .set_reset        (set_reset),

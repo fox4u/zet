@@ -86,6 +86,9 @@ module vga_lcd_fml #(
     input [9:0] end_vert,
     input [9:0] st_ver_retr,
     input [3:0] end_ver_retr,
+    input [7:0] addr_offset,
+    input [4:0] max_scan_line,
+    input [1:0] addressing,
 
     input x_dotclockdiv2,
 

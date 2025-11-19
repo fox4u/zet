@@ -58,6 +58,7 @@ module vga_config_iface (
     output       graphics_alpha,   // 3cf (3ce: 6)
     output       memory_mapping1,  // 3cf (3ce: 6)
     output [1:0] write_mode,       // 3cf (3ce: 5)
+    output [2:0] rotate_count,     // 3cf (3ce: 3)
     output [1:0] raster_op,        // 3cf (3ce: 3)
     output       read_mode,        // 3cf (3ce: 5)
     output [7:0] bitmask,          // 3cf (3ce: 8)
@@ -97,6 +98,10 @@ module vga_config_iface (
     output [ 9:0] end_vert,
     output [ 9:0] st_ver_retr,
     output [ 3:0] end_ver_retr,
+    output [ 7:0] addr_offset,
+    output [ 4:0] max_scan_line,
+
+    output [ 1:0] addressing,
 
     input v_retrace,
     input vh_retrace
@@ -157,6 +162,7 @@ module vga_config_iface (
   assign memory_mapping1  = graphics_ctrl[6][3];
   assign write_mode       = graphics_ctrl[5][1:0];
   assign raster_op        = graphics_ctrl[3][4:3];
+  assign rotate_count     = graphics_ctrl[3][2:0];
   assign read_mode        = graphics_ctrl[5][3];
   assign bitmask          = graphics_ctrl[8];
   assign set_reset        = graphics_ctrl[0][3:0];
@@ -180,6 +186,9 @@ module vga_config_iface (
   assign end_vert     = { CRTC[7][6], CRTC[7][1], CRTC[18] };
   assign st_ver_retr  = { CRTC[7][7], CRTC[7][2], CRTC[16] };
   assign end_ver_retr = CRTC[17][3:0];
+  assign addr_offset  = CRTC[19][7:0];
+  assign max_scan_line   = CRTC[9][4:0];
+  assign addressing      = { CRTC[20][6], CRTC[23][6] };
 
   assign write    = wb_stb_i & wb_we_i;
   assign read     = wb_stb_i & !wb_we_i;
@@ -298,6 +307,7 @@ module vga_config_iface (
       4'hd: wb_dat_o = { 12'b0, v_retrace, 2'b0, vh_retrace };
       default: wb_dat_o = 16'h0;
     endcase
+
 `ifdef SIMULATION
   initial
     begin
