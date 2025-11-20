@@ -52,6 +52,9 @@ module vga_sequencer_fml (
     input [5:0] cur_end,
     input [4:0] vcursor,
     input [6:0] hcursor,
+    input [7:0] addr_offset,
+    input [4:0] max_scan_line,
+    input [1:0] addressing,    
 
     input x_dotclockdiv2,
 
@@ -129,6 +132,7 @@ module vga_sequencer_fml (
 
     .attr_plane_enable (4'hf),
     .x_dotclockdiv2    (x_dotclockdiv2),
+    .addr_offset       (addr_offset),
 
     .h_count      (h_count),
     .v_count      (v_count),

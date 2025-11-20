@@ -218,6 +218,9 @@ module vga_lcd_fml #(
     .cur_end (cur_end),
     .vcursor (vcursor),
     .hcursor (hcursor),
+    .addr_offset  (addr_offset),
+    .max_scan_line(max_scan_line),
+    .addressing   (addressing),    
 
     .x_dotclockdiv2 (x_dotclockdiv2),
 
