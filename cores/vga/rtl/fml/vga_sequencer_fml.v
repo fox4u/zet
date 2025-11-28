@@ -155,6 +155,9 @@ module vga_sequencer_fml (
     .fml_dat_i (fml_dat_i),
     .fml_stb_o (csr_gm_stb_o),
 
+    .max_scan_line(max_scan_line),
+    .addressing   (addressing),
+
     .h_count      (h_count),
     .v_count      (v_count),
     .horiz_sync_i (horiz_sync_i),
