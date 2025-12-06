@@ -397,13 +397,27 @@ module kotku (
     .LOCK   (lock)
   );
 */
+`ifndef SIMULATION
   pll2 pll (
     .CLKI   (clk_25_),
     .CLKOP  (sdram_clk),  // 50 Mhz
     .CLKOS  (sdram_clk_), // 50 Mhz with phase shift
-    .CLKOS2 (clk),        // 12.5 Mhz
+    .CLKOS2 (vga_clk),    // 25 Mhz
+    .CLKOS3 (clk),        // 12.5 Mhz
     .LOCK   (lock)
   );
+`else
+  wire sdram_clk_2;
+  pll2 pll (
+    .CLKI   (clk_25_),
+    .CLKOP  (sdram_clk),  // 50 Mhz
+    .CLKOS  (sdram_clk_2),// 50 Mhz with phase shift
+    .CLKOS2 (vga_clk),    // 25 Mhz
+    .CLKOS3 (clk),        // 12.5 Mhz
+    .LOCK   (lock)
+  );
+  assign sdram_clk_ = sdram_clk;
+`endif
 
   clk_gen #(
     .res   (21),
@@ -756,7 +770,8 @@ module kotku (
     .vga_lcd_fml_do(vga_lcd_fml_do),
     .vga_lcd_fml_di(vga_lcd_fml_di),
 
-    .vga_clk(vga_clk)
+    .vga_clk(vga_clk),
+    .vga_rst(vga_rst)
 
   );
 

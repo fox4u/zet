@@ -60,25 +60,25 @@
         <Source name="../../../cores/vga/rtl/fml/vga_crtc_fml.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="../../../cores/vga/rtl/fml/vga_dac_regs_fml.v" type="Verilog" type_short="Verilog">
+        <Source name="../../../cores/vga/rtl/fml/dc/vga_dac_regs_fml.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="../../../cores/vga/rtl/fml/vga_fifo.v" type="Verilog" type_short="Verilog">
+        <Source name="../../../cores/vga/rtl/fml/dc/atxfifo.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="../../../cores/vga/rtl/fml/vga_fml.v" type="Verilog" type_short="Verilog">
+        <Source name="../../../cores/vga/rtl/fml/dc/vga_fml.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="../../../cores/vga/rtl/fml/vga_lcd_fml.v" type="Verilog" type_short="Verilog">
+        <Source name="../../../cores/vga/rtl/fml/dc/vga_lcd_fml.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
         <Source name="../../../cores/vga/rtl/fml/vga_linear_fml.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="../../../cores/vga/rtl/fml/vga_pal_dac_fml.v" type="Verilog" type_short="Verilog">
+        <Source name="../../../cores/vga/rtl/fml/dc/vga_pal_dac_fml.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
-        <Source name="../../../cores/vga/rtl/fml/vga_palette_regs_fml.v" type="Verilog" type_short="Verilog">
+        <Source name="../../../cores/vga/rtl/fml/dc/vga_palette_regs_fml.v" type="Verilog" type_short="Verilog">
             <Options/>
         </Source>
         <Source name="../../../cores/vga/rtl/fml/vga_planar_fml.v" type="Verilog" type_short="Verilog">
