@@ -79,8 +79,8 @@ module vga_text_mode_fml (
   reg  [15:0] pipe;
   wire       load_shift;
 
-  reg  [7:0] video_on_h;
-  reg  [7:0] horiz_sync;
+  reg  [9:0] video_on_h;
+  reg  [9:0] horiz_sync;
 
   wire fg_or_bg;
   wire brown_bg;
@@ -108,8 +108,8 @@ module vga_text_mode_fml (
   assign vga_addr     = { 4'b0, hor_addr } + { ver_addr, 4'b0 };
   assign char_addr    = { char_addr_in, v_count[3:0] };
   assign load_shift   = pipe[7] | pipe[15];
-  assign video_on_h_o = video_on_h[7];
-  assign horiz_sync_o = horiz_sync[7];
+  assign video_on_h_o = video_on_h[9];
+  assign horiz_sync_o = horiz_sync[9];
   assign fml_stb_o    = pipe[2];
 
   assign fg_or_bg = vga_shift[7] ^ cursor_on;
@@ -205,24 +205,24 @@ module vga_text_mode_fml (
   always @(posedge clk)
     if (rst)
       begin
-        video_on_h <= 8'b0;
+        video_on_h <= 10'b0;
       end
     else
       if (enable)
         begin
-          video_on_h <= { video_on_h[6:0], video_on_h_i };
+          video_on_h <= { video_on_h[8:0], video_on_h_i };
         end
 
   // horiz_sync
   always @(posedge clk)
     if (rst)
       begin
-        horiz_sync <= 8'b0;
+        horiz_sync <= 10'b0;
       end
     else
       if (enable)
         begin
-          horiz_sync <= { horiz_sync[6:0], horiz_sync_i };
+          horiz_sync <= { horiz_sync[8:0], horiz_sync_i };
         end
 
   // blink_count
