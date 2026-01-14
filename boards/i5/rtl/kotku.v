@@ -24,6 +24,7 @@ module kotku (
     // General purpose IO
     output reg    led_,
     output [ 7:0] led_ext_,
+    input         sw_,
 
     // flash signals
 `ifdef SIMULATION
@@ -1133,7 +1134,7 @@ module kotku (
 */
 
   // Continuous assignments
-  assign rst_lck    = lock; // !sw_[0] & lock;
+  assign rst_lck    = !sw_ & lock;
 
   assign nmi = 1'b0; // nmi_pb;
   assign dat_i = nmia ? 16'h0002 :

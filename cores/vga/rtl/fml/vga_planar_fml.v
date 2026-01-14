@@ -135,14 +135,14 @@ module vga_planar_fml (
         plane_addr0 <= 2'b00;
         word_offset <= 15'h0;
         plane_addr  <= 2'b00;
-        r_v_count   <= 9'b0;
+        r_v_count   <= 10'b0;
       end
     else
       if (enable)
         begin
           // Loading new row_addr and col_addr when h_count[3:0]==4'h0
           // v_count * 40 or 22 (depending on x_dotclockdiv2)
-          if (w_v_count == 9'b0) begin
+          if (w_v_count == 10'b0) begin
             row_addr <= 15'h0;
             r_v_count <= w_v_count;
           end
